@@ -92,10 +92,18 @@ Shader "Unlit/PbrSimple"
                     lightOut += (diffuseRatio * _Albedo / UNITY_PI + specular) * radiance * nDotL;
                 }
 
-                float ao = 0.05;
-                float3 ambient = float3(0.03, 0.03, 0.03) * _Albedo * ao;
+                float3 indirectSpecularRatio = fresnelSchlickRoughness(max(dot(normal, view), 0.0), F0, _Roughness);
+                float3 indirectDiffuseRatio = 1.0 - indirectSpecularRatio;
+                indirectDiffuseRatio *= 1.0 - _Metallic;
+                float3 irradiance = texCUBE(_IndirectDiffuseMap, normal).rgb;
+                float3 diffuse = irradiance * _Albedo;// / UNITY_PI;
+                float ao = 1;
+                float3 ambient = (indirectDiffuseRatio * diffuse * ao);
+                //float3 ambient = float3(0.03, 0.03, 0.03) * _Albedo * ao;
                 col.rgb = ambient + lightOut;
-                
+
+                //tmp
+                //col.rgb = texCUBE(_IndirectDiffuseMap, normal).rgb;
                 return col;
             }
             ENDCG

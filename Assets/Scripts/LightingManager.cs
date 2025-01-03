@@ -4,6 +4,8 @@ using Debug = UnityEngine.Debug;
 
 public class LightingManager : MonoBehaviour
 {
+    public Cubemap indirectDiffuseMap;
+    
     // Start is called before the first frame update
     private static int MAX_LIGHTS = 16;
     void Start()
@@ -31,6 +33,7 @@ public class LightingManager : MonoBehaviour
         
         Shader.SetGlobalFloatArray("_PointLightData", pointLightData);
         Shader.SetGlobalFloat("_PointLightCount", pointLights.Length);
+        Shader.SetGlobalTexture("_IndirectDiffuseMap", indirectDiffuseMap);
     }
 
     // Update is called once per frame
