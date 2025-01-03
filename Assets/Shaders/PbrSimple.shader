@@ -51,14 +51,20 @@ Shader "Unlit/PbrSimple"
 
             fixed4 frag (v2f i) : SV_Target
             {
+                float3 normal = normalize(i.worldNormal);
+                float3 view = normalize(_WorldSpaceCameraPos - i.worldPos);
                 float4 col = 0;
                 for(int l = 0; l < _PointLightCount; l++)
                 {
                     float3 lightPos = float3(_PointLightData[l * 6], _PointLightData[l * 6 + 1], _PointLightData[l * 6 + 2]);
                     float3 lightColor = float3(_PointLightData[l * 6 + 3], _PointLightData[l * 6 + 4], _PointLightData[l * 6 + 5]);
                     float3 lightVec = lightPos - i.worldPos;
+                    float lightDist = length(lightVec);
+                    lightVec = lightVec / lightDist;
+                    float attenuation = 1.0 / (lightDist * lightDist);
+                    float3 radiance = lightColor * attenuation;
 
-                    col.rgb += _Color.rgb * lightColor * saturate(dot(normalize(i.worldNormal), normalize(lightVec)));
+                    col.rgb += _Color.rgb * radiance * saturate(dot(normalize(i.worldNormal), normalize(lightVec)));
                 }
                 
                 return col;
