@@ -17,6 +17,10 @@ public class PostProcessing : MonoBehaviour
         bool pingPong = false;
         for (int i = 0; i < postProcessLayers.Length; i++)
         {
+            if (!postProcessLayers[i].activeSelf)
+            {
+                continue;
+            }
             IPostProcessLayer postProcessLayer = postProcessLayers[i].GetComponent<IPostProcessLayer>();
             if (postProcessLayer == null)
             {

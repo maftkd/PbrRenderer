@@ -2,17 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GammaCorrection : MonoBehaviour
+public class GammaCorrection : MonoBehaviour, IPostProcessLayer
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public Shader shader;
+    private Material _material;
 
-    // Update is called once per frame
-    void Update()
+    public void OnRenderImage(RenderTexture source, RenderTexture destination)
     {
+        if (_material == null)
+        {
+            _material = new Material(shader);
+        }
         
+        Graphics.Blit(source, destination, _material);
     }
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 public class ToneMapper : MonoBehaviour, IPostProcessLayer
 {
     public Shader shader;
-    private Material material;
+    private Material _material;
     [Range(0,5)]
     public float exposure;
     
@@ -23,14 +23,14 @@ public class ToneMapper : MonoBehaviour, IPostProcessLayer
 
     public void OnRenderImage(RenderTexture source, RenderTexture destination)
     {
-        if (material == null)
+        if (_material == null)
         {
-            material = new Material(shader);
+            _material = new Material(shader);
         }
 
-        material.SetFloat("_Exposure", exposure);
+        _material.SetFloat("_Exposure", exposure);
         
-        Graphics.Blit(source, destination, material);
+        Graphics.Blit(source, destination, _material);
     }
 
 }

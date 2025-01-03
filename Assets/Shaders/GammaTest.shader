@@ -1,13 +1,12 @@
-Shader "Hidden/ToneMapper"
+Shader "Unlit/GammaTest"
 {
     Properties
     {
-        _MainTex ("Texture", 2D) = "white" {}
     }
     SubShader
     {
-        // No culling or depth
-        Cull Off ZWrite Off ZTest Always
+        Tags { "RenderType"="Opaque" }
+        LOD 100
 
         Pass
         {
@@ -37,20 +36,15 @@ Shader "Hidden/ToneMapper"
                 return o;
             }
 
-            sampler2D _MainTex;
-            float _Exposure;
-
             fixed4 frag (v2f i) : SV_Target
             {
-                fixed4 col = tex2D(_MainTex, i.uv);
-                //convert to linear space
-                col.rgb = pow(col.rgb, 2.2);
-                //reinhard
-                //col.rgb = col.rgb / (1 + col.rgb);
-                col.rgb = 1 - exp(-col.rgb * _Exposure);
+                // sample the texture
+                fixed4 col = i.uv.x;
+                //col.rgb = pow(col.rgb, 2.2);
 
-                //convert back to gamma space
-                col.rgb = pow(col.rgb, 1/2.2);
+                fixed isLine = step(frac(i.uv.x * 10), 0.1) * step(0.05, i.uv.x);
+                //fixed isLine = frac(i.uv.x * 11) < 0.5;
+                col = lerp(col, 0, isLine);
                 return col;
             }
             ENDCG
