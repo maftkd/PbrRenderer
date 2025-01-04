@@ -12,7 +12,7 @@ public class EnvironmentMapBaker : MonoBehaviour
     public GameObject proxyGeo;
 
     public Shader diffuseConvolution;
-    public Shader mipTestShader;
+    public Shader specularConvolution;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,17 +24,22 @@ public class EnvironmentMapBaker : MonoBehaviour
     {
         
     }
+    
+    void RenderBaseCubemap()
+    {
+        Camera cam = GetComponent<Camera>();
+        RenderTexture cubeRT = new RenderTexture(256, 256, 0, RenderTextureFormat.ARGBHalf);
+        cubeRT.dimension = TextureDimension.Cube;
+        Shader.SetGlobalTexture("_UnfilteredEnvironment", cubeRT);
+        cam.RenderToCubemap(cubeRT);
+    }
 
     [ContextMenu("Bake Diffuse")]
     public void BakeDiffuse()
     {
         Camera cam = GetComponent<Camera>();
 
-        RenderTexture cubeRT = new RenderTexture(256, 256, 0, RenderTextureFormat.ARGBHalf);
-        cubeRT.dimension = TextureDimension.Cube;
-        Shader.SetGlobalTexture("_UnfilteredEnvironment", cubeRT);
-
-        cam.RenderToCubemap(cubeRT);
+        RenderBaseCubemap();
         
         proxyGeo.SetActive(true);
         cam.SetReplacementShader(diffuseConvolution, "RenderType");
@@ -44,20 +49,17 @@ public class EnvironmentMapBaker : MonoBehaviour
         
         cam.ResetReplacementShader();
         proxyGeo.SetActive(false);
-        /*
-        Cubemap cubemap = new Cubemap(256, TextureFormat.RGBAHalf, false);
-        cam.RenderToCubemap(cubemap);
-        
-        AssetDatabase.CreateAsset(cubemap, $"Assets/Textures/{filename}.asset");
-        */
         
         AssetDatabase.CreateAsset(indirectDiffuseMap, $"Assets/Textures/{filename}_diffuse.asset");
     }
     
-    [ContextMenu("Test Mips")]
-    public void TestMips()
+    [ContextMenu("Bake Specular")]
+    public void BakeSpecular()
     {
         Camera cam = GetComponent<Camera>();
+        
+        RenderBaseCubemap();
+        
         int mapSize = 256;
 
         Cubemap cubemap = new Cubemap(mapSize, TextureFormat.RGBAHalf, true);
@@ -65,13 +67,11 @@ public class EnvironmentMapBaker : MonoBehaviour
         int numMips = cubemap.mipmapCount;
         
         proxyGeo.SetActive(true);
-        cam.SetReplacementShader(mipTestShader, "RenderType");
-        Color testCol;
+        cam.SetReplacementShader(specularConvolution, "RenderType");
         for(int i = 0; i < numMips; i++)
         {
-            float hue = (float)i / (numMips - 1);
-            testCol = Color.HSVToRGB(hue, 1, 1);
-            Shader.SetGlobalColor("_MipTestColor", testCol);
+            float roughness = (float)i / (numMips - 1);
+            Shader.SetGlobalFloat("_BakeRoughness", roughness);
             Cubemap mipCubemap = new Cubemap(mapSize >> i, TextureFormat.RGBAHalf, false);
             cam.RenderToCubemap(mipCubemap);
 
@@ -84,6 +84,6 @@ public class EnvironmentMapBaker : MonoBehaviour
         cam.ResetReplacementShader();
         proxyGeo.SetActive(false);
         
-        AssetDatabase.CreateAsset(cubemap, $"Assets/Textures/{filename}_mipTest.asset");
+        AssetDatabase.CreateAsset(cubemap, $"Assets/Textures/{filename}_specular.asset");
     }
 }

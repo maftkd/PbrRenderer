@@ -307,4 +307,4 @@ MonoBehaviour:
   filename: Skybox_Daytime
   proxyGeo: {fileID: 565504272}
   diffuseConvolution: {fileID: 4800000, guid: 9a50aa5a654a943599799736cb5a6235, type: 3}
-  mipTestShader: {fileID: 4800000, guid: 5cb04f0d57b484c5faaf6708cc45438a, type: 3}
+  specularConvolution: {fileID: 4800000, guid: 2a5edfc7951094d7abcc4b599ba1520d, type: 3}

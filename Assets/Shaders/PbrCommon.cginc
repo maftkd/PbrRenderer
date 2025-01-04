@@ -2,7 +2,7 @@ float _PointLightData[96]; // 6 * 16
 float _PointLightCount;
 samplerCUBE_half _IndirectDiffuseMap;
 
-float DistributionGGX(float3 normal, float3 halfVec, float roughness)
+float distributionGGX(float3 normal, float3 halfVec, float roughness)
 {
     float a = roughness*roughness;
     float a2 = a*a;
@@ -15,7 +15,7 @@ float DistributionGGX(float3 normal, float3 halfVec, float roughness)
 	
     return num / denom;
 }
-float GeometrySchlickGGX(float NdotV, float roughness)
+float geometrySchlickGGX(float NdotV, float roughness)
 {
     float r = (roughness + 1.0);
     float k = (r*r) / 8.0;
@@ -25,12 +25,12 @@ float GeometrySchlickGGX(float NdotV, float roughness)
 	
     return num / denom;
 }
-float GeometrySmith(float3 normal, float3 view, float3 light, float roughness)
+float geometrySmith(float3 normal, float3 view, float3 light, float roughness)
 {
     float NdotV = max(dot(normal, view), 0.0);
     float NdotL = max(dot(normal, light), 0.0);
-    float ggx2  = GeometrySchlickGGX(NdotV, roughness);
-    float ggx1  = GeometrySchlickGGX(NdotL, roughness);
+    float ggx2  = geometrySchlickGGX(NdotV, roughness);
+    float ggx1  = geometrySchlickGGX(NdotL, roughness);
 	
     return ggx1 * ggx2;
 }

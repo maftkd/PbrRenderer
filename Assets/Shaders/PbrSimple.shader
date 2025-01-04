@@ -75,8 +75,8 @@ Shader "Unlit/PbrSimple"
                     //col.rgb += 0.25;
 
                     //cook-torrence brdf
-                    float ndf = DistributionGGX(normal, halfVec, _Roughness);
-                    float geometryTerm = GeometrySmith(normal, view, lightVec, _Roughness);
+                    float ndf = distributionGGX(normal, halfVec, _Roughness);
+                    float geometryTerm = geometrySmith(normal, view, lightVec, _Roughness);
                     float3 fresnel = fresnelSchlick(max(dot(halfVec, view), 0.0), F0);
 
                     float3 specularRatio = fresnel;
