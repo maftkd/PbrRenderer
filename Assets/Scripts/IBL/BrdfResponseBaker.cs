@@ -18,6 +18,7 @@ public class BrdfResponseBaker : MonoBehaviour
         Texture2D brdfLUTTexture = new Texture2D(512, 512, TextureFormat.RGHalf, false);
         brdfLUTTexture.ReadPixels(new Rect(0, 0, 512, 512), 0, 0);
         brdfLUTTexture.Apply();
+        brdfLUTTexture.wrapMode = TextureWrapMode.Clamp;
 
         RenderTexture.active = active;
         

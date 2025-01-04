@@ -1,6 +1,8 @@
 float _PointLightData[96]; // 6 * 16
 float _PointLightCount;
 samplerCUBE_half _IndirectDiffuseMap;
+samplerCUBE_half _IndirectSpecularMap;
+sampler2D _BrdfLut;
 
 float distributionGGX(float3 normal, float3 halfVec, float roughness)
 {
