@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+#if UNITY_EDITOR || UNITY_EDITOR_OSX
 using UnityEditor;
 using UnityEngine;
 
@@ -25,3 +24,4 @@ public class BrdfResponseBaker : MonoBehaviour
         AssetDatabase.CreateAsset(brdfLUTTexture, "Assets/Textures/brdfLUT.asset");
     }
 }
+#endif

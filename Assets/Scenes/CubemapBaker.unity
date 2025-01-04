@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.7289241, g: 0.7873871, b: 0.84961385, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -309,6 +309,9 @@ MonoBehaviour:
   proxyGeo: {fileID: 565504272}
   diffuseConvolution: {fileID: 4800000, guid: 9a50aa5a654a943599799736cb5a6235, type: 3}
   specularConvolution: {fileID: 4800000, guid: 2a5edfc7951094d7abcc4b599ba1520d, type: 3}
+  baseMapSize: 256
+  diffuseMapSize: 128
+  specularMapSize: 128
 --- !u!114 &2129235593
 MonoBehaviour:
   m_ObjectHideFlags: 0

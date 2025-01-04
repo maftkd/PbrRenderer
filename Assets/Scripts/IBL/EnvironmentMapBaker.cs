@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
+#if UNITY_EDITOR || UNITY_EDITOR_OSX
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.Experimental.Rendering;
 using UnityEngine.Rendering;
 
 public class EnvironmentMapBaker : MonoBehaviour
@@ -13,25 +11,28 @@ public class EnvironmentMapBaker : MonoBehaviour
 
     public Shader diffuseConvolution;
     public Shader specularConvolution;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-    
+    public int baseMapSize;
+    public int diffuseMapSize;
+    public int specularMapSize;
+
     void RenderBaseCubemap()
     {
         Camera cam = GetComponent<Camera>();
-        RenderTexture cubeRT = new RenderTexture(256, 256, 0, RenderTextureFormat.ARGBHalf);
+        //this size is fixed as this method is only used to renderer temporary cubemap
+        RenderTexture cubeRT = new RenderTexture(512, 512, 0, RenderTextureFormat.ARGBHalf);
         cubeRT.dimension = TextureDimension.Cube;
         Shader.SetGlobalTexture("_UnfilteredEnvironment", cubeRT);
         cam.RenderToCubemap(cubeRT);
+    }
+    
+    [ContextMenu("Bake Base cubemap")]
+    public void BakeBaseCubemap()
+    {
+        Camera cam = GetComponent<Camera>();
+        Cubemap cubemap = new Cubemap(baseMapSize, TextureFormat.RGBAHalf, false);
+        cam.RenderToCubemap(cubemap);
+        AssetDatabase.CreateAsset(cubemap, $"Assets/Textures/{filename}_base.asset");
     }
 
     [ContextMenu("Bake Diffuse")]
@@ -44,7 +45,7 @@ public class EnvironmentMapBaker : MonoBehaviour
         proxyGeo.SetActive(true);
         cam.SetReplacementShader(diffuseConvolution, "RenderType");
         
-        Cubemap indirectDiffuseMap = new Cubemap(256, TextureFormat.RGBAHalf, false);
+        Cubemap indirectDiffuseMap = new Cubemap(diffuseMapSize, TextureFormat.RGBAHalf, false);
         cam.RenderToCubemap(indirectDiffuseMap);
         
         cam.ResetReplacementShader();
@@ -60,7 +61,7 @@ public class EnvironmentMapBaker : MonoBehaviour
         
         RenderBaseCubemap();
         
-        int mapSize = 256;
+        int mapSize = specularMapSize;
 
         Cubemap cubemap = new Cubemap(mapSize, TextureFormat.RGBAHalf, true);
         cubemap.filterMode = FilterMode.Trilinear;
@@ -86,4 +87,6 @@ public class EnvironmentMapBaker : MonoBehaviour
         
         AssetDatabase.CreateAsset(cubemap, $"Assets/Textures/{filename}_specular.asset");
     }
+    
 }
+#endif

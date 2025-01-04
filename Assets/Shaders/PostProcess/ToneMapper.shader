@@ -43,14 +43,9 @@ Shader "Hidden/ToneMapper"
             fixed4 frag (v2f i) : SV_Target
             {
                 fixed4 col = tex2D(_MainTex, i.uv);
-                //convert to linear space
-                col.rgb = pow(col.rgb, 2.2);
-                //reinhard
-                //col.rgb = col.rgb / (1 + col.rgb);
+                //float luminance = dot(col.rgb, float3(0.299, 0.587, 0.114));
+                //return step(1.01, luminance);
                 col.rgb = 1 - exp(-col.rgb * _Exposure);
-
-                //convert back to gamma space
-                col.rgb = pow(col.rgb, 1/2.2);
                 return col;
             }
             ENDCG

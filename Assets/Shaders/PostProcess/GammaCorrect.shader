@@ -42,7 +42,7 @@ Shader "Hidden/GammaCorrect"
             fixed4 frag (v2f i) : SV_Target
             {
                 fixed4 col = tex2D(_MainTex, i.uv);
-                col.rgb = pow(col.rgb, 2.2);
+                col.rgb = pow(col.rgb, 1 / 2.2);
                 return col;
             }
             ENDCG
