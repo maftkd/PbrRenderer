@@ -834,7 +834,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameraLookSpeed: 5
-  cameraMoveSpeed: 5
+  cameraMoveSpeed: 1
   cameraBoostMult: 2
   cameraSpeedChangeSpeed: -0.1
   minSpeedMult: 0.1
@@ -855,7 +855,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &997304991
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1121,11 +1121,11 @@ PrefabInstance:
     - target: {fileID: -2859109400176981367, guid: 240ce3572cf9540c0ae4611e1e783f73, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: f31d88324f56e4afd83ad31f7caed917, type: 2}
+      objectReference: {fileID: 2100000, guid: 48958d77e8ab04154ad2134573f2f5c2, type: 2}
     - target: {fileID: -895306380916907690, guid: 240ce3572cf9540c0ae4611e1e783f73, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: f31d88324f56e4afd83ad31f7caed917, type: 2}
+      objectReference: {fileID: 2100000, guid: 48958d77e8ab04154ad2134573f2f5c2, type: 2}
     - target: {fileID: 919132149155446097, guid: 240ce3572cf9540c0ae4611e1e783f73, type: 3}
       propertyPath: m_Name
       value: teapot

@@ -2,10 +2,13 @@ Shader "Unlit/PbrTextured"
 {
     Properties
     {
-        _Albedo ("Albedo", Color) = (1,1,1,1)
-        _Roughness ("Roughness", Range(0,1)) = 0.5
-        _Metallic ("Metallic", Range(0,1)) = 0.5
+        _Albedo ("Albedo", 2D) = "white" {}
         _BumpMap("Normal Map", 2D) = "bump" {}
+        [Toggle] _MetallicInAlpha ("Metallic in Alpha", Range(0,1)) = 0
+        _MetallicMap ("Metallic Map", 2D) = "black" {}
+        _RoughnessMap ("Roughness Map", 2D) = "white" {}
+        _AmbientOcclusionMap("Ambient Occlusion Map", 2D) = "white" {}
+        _TextureST("Texture ST", Vector) = (1, 1, 0, 0)
     }
     SubShader
     {
@@ -39,9 +42,6 @@ Shader "Unlit/PbrTextured"
                 float2 uv : TEXCOORD5;
             };
 
-            float4 _Albedo;
-            float _Roughness;
-            float _Metallic;
 
             v2f vert (appdata v)
             {
@@ -63,7 +63,13 @@ Shader "Unlit/PbrTextured"
             }
 
             sampler2D _BumpMap;
-            fixed4 _BumpMap_ST;
+            sampler2D _Albedo;
+            sampler2D _MetallicMap;
+            sampler2D _RoughnessMap;
+            fixed _MetallicInAlpha;
+            fixed4 _TextureST;
+            
+            sampler2D _AmbientOcclusionMap;
 
             fixed4 frag (v2f i) : SV_Target
             {
@@ -73,17 +79,32 @@ Shader "Unlit/PbrTextured"
                 //float3 normal = normalize(i.worldNormal);
                 //return fixed4(i.uv, 0, 1);
                 half3 normal;
-                half3 tnormal = UnpackNormal(tex2D(_BumpMap, i.uv * _BumpMap_ST.xy));
+                half3 tnormal = UnpackNormal(tex2D(_BumpMap, i.uv * _TextureST.xy));
                 // transform normal from tangent to world space
                 normal.x = dot(i.tspace0, tnormal);
                 normal.y = dot(i.tspace1, tnormal);
                 normal.z = dot(i.tspace2, tnormal);
                 //return fixed4(normal, 1);
+
+                float3 albedo = tex2D(_Albedo, i.uv * _TextureST.xy).rgb;
+                albedo = pow(albedo, 2.2);
+
+                float metallic = 0;
+                if(_MetallicInAlpha)
+                {
+                    metallic = tex2D(_MetallicMap, i.uv * _TextureST.xy).a;
+                }
+                else
+                {
+                    metallic = tex2D(_MetallicMap, i.uv * _TextureST.xy).r;
+                }
+                float roughness = tex2D(_RoughnessMap, i.uv * _TextureST.xy).r;
+                //return float4(metallic, roughness, 0, 1);
                 
                 float3 view = normalize(_WorldSpaceCameraPos - i.worldPos);
                 
                 float3 F0 = float3(0.04, 0.04, 0.04); 
-                F0 = lerp(F0, _Albedo.rgb, _Metallic);
+                F0 = lerp(F0, albedo, metallic);
 
                 //reflectance equation
                 for(int l = 0; l < _PointLightCount; l++)
@@ -98,18 +119,15 @@ Shader "Unlit/PbrTextured"
                     float3 halfVec = normalize(view + lightVec);
                     float attenuation = 1.0 / (lightDist * lightDist);
                     float3 radiance = lightColor * attenuation;
-                    //simple test
-                    //col.rgb += _Albedo.rgb * radiance * saturate(dot(normalize(i.worldNormal), normalize(lightVec)));
-                    //col.rgb += 0.25;
 
                     //cook-torrence brdf
-                    float ndf = distributionGGX(normal, halfVec, _Roughness);
-                    float geometryTerm = geometrySmith(normal, view, lightVec, _Roughness);
+                    float ndf = distributionGGX(normal, halfVec, roughness);
+                    float geometryTerm = geometrySmith(normal, view, lightVec, roughness);
                     float3 fresnel = fresnelSchlick(max(dot(halfVec, view), 0.0), F0);
 
                     float3 specularRatio = fresnel;
                     float3 diffuseRatio = 1.0 - specularRatio;
-                    diffuseRatio *= 1.0 - _Metallic; //prevent metallic from having diffuse component
+                    diffuseRatio *= 1.0 - metallic; //prevent metallic from having diffuse component
 
                     float3 numerator = ndf * geometryTerm * fresnel;
                     float denominator = 4 * max(dot(normal, view), 0.0) * max(dot(normal, lightVec), 0.0) + 0.001;
@@ -117,25 +135,25 @@ Shader "Unlit/PbrTextured"
                     
                     //Add up outgoing radiance
                     float nDotL = saturate(dot(normal, lightVec));
-                    lightOut += (diffuseRatio * _Albedo.rgb / UNITY_PI + specular) * radiance * nDotL;
+                    lightOut += (diffuseRatio * albedo / UNITY_PI + specular) * radiance * nDotL;
                 }
                 
-                float ao = 1;
+                float ao = tex2D(_AmbientOcclusionMap, i.uv * _TextureST.xy).r;
 
                 float nDotV = saturate(dot(normal, view));
-                float3 fresnelFactor = fresnelSchlickRoughness(nDotV, F0, _Roughness);
+                float3 fresnelFactor = fresnelSchlickRoughness(nDotV, F0, roughness);
                 
                 float3 indirectSpecularRatio = fresnelFactor;
                 float3 indirectDiffuseRatio = 1.0 - indirectSpecularRatio;
-                indirectDiffuseRatio *= 1.0 - _Metallic;
+                indirectDiffuseRatio *= 1.0 - metallic;
                 
                 float3 irradiance = texCUBE(_IndirectDiffuseMap, normal).rgb;
-                float3 diffuse = irradiance * _Albedo.rgb;// / UNITY_PI;
+                float3 diffuse = irradiance * albedo;// / UNITY_PI;
 
                 float3 reflection = reflect(-view, normal);
                 const float MAX_REFLECTION_LOD = 7.0;
-                float3 prefilteredColor = texCUBElod(_IndirectSpecularMap, float4(reflection, _Roughness * MAX_REFLECTION_LOD)).rgb;
-                float2 envBrdf = tex2D(_BrdfLut, float2(nDotV, _Roughness)).rg;
+                float3 prefilteredColor = texCUBElod(_IndirectSpecularMap, float4(reflection, roughness * MAX_REFLECTION_LOD)).rgb;
+                float2 envBrdf = tex2D(_BrdfLut, float2(nDotV, roughness)).rg;
                 float3 specular = prefilteredColor * (fresnelFactor * envBrdf.x + envBrdf.y);
                 
                 float3 ambient = (indirectDiffuseRatio * diffuse + specular) * ao;
