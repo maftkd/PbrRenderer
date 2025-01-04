@@ -218,6 +218,7 @@ GameObject:
   - component: {fileID: 2129235590}
   - component: {fileID: 2129235589}
   - component: {fileID: 2129235592}
+  - component: {fileID: 2129235593}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -308,3 +309,16 @@ MonoBehaviour:
   proxyGeo: {fileID: 565504272}
   diffuseConvolution: {fileID: 4800000, guid: 9a50aa5a654a943599799736cb5a6235, type: 3}
   specularConvolution: {fileID: 4800000, guid: 2a5edfc7951094d7abcc4b599ba1520d, type: 3}
+--- !u!114 &2129235593
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2129235588}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1d018d95cbbb488792d4a444e5b3576, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  brdfResponseBakerShader: {fileID: 4800000, guid: 039ba72c0fc6a44359472ea008834044, type: 3}

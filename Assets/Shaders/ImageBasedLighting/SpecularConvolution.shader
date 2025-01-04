@@ -43,9 +43,9 @@ Shader "Unlit/SpecularConvolution"
             float _BakeRoughness;
             samplerCUBE_half _UnfilteredEnvironment;
 
-            fixed4 frag (v2f i) : SV_Target
+            fixed4 frag (v2f IN) : SV_Target
             {
-                float3 normal = normalize(i.localPos);
+                float3 normal = normalize(IN.localPos);
                 float3 reflection = normal;
                 float3 view = reflection;
 
@@ -69,11 +69,6 @@ Shader "Unlit/SpecularConvolution"
 
                 prefilteredColor /= totalWeight;
                 return float4(prefilteredColor.rgb, 1);
-
-                
-                return _BakeRoughness;
-                //return 1;
-                //return _MipTestColor;
             }
             ENDCG
         }
