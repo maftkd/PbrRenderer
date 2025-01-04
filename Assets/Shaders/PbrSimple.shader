@@ -95,42 +95,27 @@ Shader "Unlit/PbrSimple"
                 float ao = 1;
 
                 float nDotV = saturate(dot(normal, view));
-                float fresnelFactor = fresnelSchlickRoughness(nDotV, F0, _Roughness);
+                float3 fresnelFactor = fresnelSchlickRoughness(nDotV, F0, _Roughness);
                 
                 float3 indirectSpecularRatio = fresnelFactor;
                 float3 indirectDiffuseRatio = 1.0 - indirectSpecularRatio;
                 indirectDiffuseRatio *= 1.0 - _Metallic;
                 
                 float3 irradiance = texCUBE(_IndirectDiffuseMap, normal).rgb;
-                //return fixed4(irradiance, 1);
-                float irradianceLuminance = irradiance.r * 0.3 + irradiance.g * 0.6 + irradiance.b * 0.1;
-                //return step(0.8, irradianceLuminance);
                 irradiance = pow(irradiance, 2.2);
                 float3 diffuse = irradiance * _Albedo.rgb;// / UNITY_PI;
 
                 float3 reflection = reflect(-view, normal);
                 const float MAX_REFLECTION_LOD = 8.0;
                 float3 prefilteredColor = texCUBElod(_IndirectSpecularMap, float4(reflection, _Roughness * MAX_REFLECTION_LOD)).rgb;
-                //prefilteredColor = pow(prefilteredColor, 2.2);
-                float prefilteredIlluminance = prefilteredColor.r * 0.3 + prefilteredColor.g * 0.6 + prefilteredColor.b * 0.1;
-                //return step(1, prefilteredIlluminance);
-                
                 float2 envBrdf = tex2D(_BrdfLut, float2(nDotV, _Roughness)).rg;
-                //return float4(envBrdf, 0, 1);
-                //envBrdf = pow(envBrdf, 2.2);
                 float3 specular = prefilteredColor * (fresnelFactor * envBrdf.x + envBrdf.y);
-                //return float4(specular, 1);
                 
                 float3 ambient = (indirectDiffuseRatio * diffuse + specular) * ao;
-                //float3 ambient = (indirectDiffuseRatio * diffuse) * ao;
-
-                //return pow(fixed4(lightOut, 1), 1 / 2.2);
-                //return fixed4(lightOut, 1);
+                
                 col.rgb = ambient + lightOut;
-                //col.rgb = lightOut;
 
                 col.rgb = pow(col.rgb, 1.0 / 2.2);
-                //col.rgb = pow(col.rgb, 2.2);
 
                 return col;
             }

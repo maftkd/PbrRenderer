@@ -374,7 +374,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c65f1fc37191c45a087024e000423f97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spacing: {x: 5, y: 5}
+  spacing: {x: 4, y: 4}
   sphere: {fileID: 562763185}
   levels: 7
 --- !u!4 &404030644
