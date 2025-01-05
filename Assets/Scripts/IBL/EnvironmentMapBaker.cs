@@ -28,30 +28,6 @@ public class EnvironmentMapBaker : MonoBehaviour
         Shader.SetGlobalTexture("_UnfilteredEnvironment", cubeRT);
         cam.RenderToCubemap(cubeRT);
     }
-    
-    //for some reason this ends up weird and grainy
-    [ContextMenu("Bake Base cubemap")]
-    public void BakeBaseCubemap()
-    {
-        Camera cam = GetComponent<Camera>();
-        cam.allowHDR = true;
-        Cubemap cubemap = new Cubemap(baseMapSize, TextureFormat.RGB24, false);
-        cam.RenderToCubemap(cubemap);
-        
-        /*
-        Shader.SetGlobalTexture("_UnfilteredEnvironment", rawCubemap);
-        
-        cam.SetReplacementShader(baseCubemapSampler, "RenderType");
-        proxyGeo.SetActive(true);
-        
-        cam.RenderToCubemap(cubemap);
-        
-        proxyGeo.SetActive(false);
-        cam.ResetReplacementShader();
-        
-        */
-        AssetDatabase.CreateAsset(cubemap, $"Assets/Textures/{filename}_base.asset");
-    }
 
     [ContextMenu("Bake Diffuse")]
     public void BakeDiffuse()
