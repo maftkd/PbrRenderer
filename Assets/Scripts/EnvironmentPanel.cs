@@ -12,6 +12,7 @@ public class EnvironmentPanel : MonoBehaviour
     public Material skyboxMaterial;
 
     private GameObject _envButtonPrefab;
+    public Shader iconGenShader;
 
     private List<Button> _buttons = new();
     // Start is called before the first frame update
@@ -22,14 +23,27 @@ public class EnvironmentPanel : MonoBehaviour
         //setup gui
         _envButtonPrefab = transform.GetChild(0).gameObject;
 
+        RenderTexture active = RenderTexture.active;
+        RenderTexture iconRT = RenderTexture.GetTemporary(128, 128, 0, RenderTextureFormat.ARGB32);
+        RenderTexture.active = iconRT;
+        Material mat = new Material(iconGenShader);
         for (int i = 0; i < environments.Length; i++)
         {
             GameObject envButton = Instantiate(_envButtonPrefab, transform);
             envButton.SetActive(true);
             Button butt = envButton.GetComponent<Button>();
             butt.onClick.AddListener(delegate { SendBakeRequest(butt); });
+            RawImage img = envButton.GetComponent<RawImage>();
+            Shader.SetGlobalTexture("_UnfilteredEnvironment", environments[i]);
+            Graphics.Blit(null, iconRT, mat);
+            Texture2D icon = new Texture2D(128, 128);
+            icon.ReadPixels(new Rect(0, 0, 128, 128), 0, 0);
+            icon.Apply();
+            img.texture = icon;
             _buttons.Add(butt);
         }
+        RenderTexture.active = active;
+        iconRT.Release();
     }
 
     void SendBakeRequest(Button button)

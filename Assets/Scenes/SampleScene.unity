@@ -897,6 +897,7 @@ MonoBehaviour:
   - {fileID: 8900000, guid: 656a59a5ff93c46498416d97e5c16b66, type: 3}
   mapBaker: {fileID: 229335994}
   skyboxMaterial: {fileID: 2100000, guid: 9fa036ea6d2514eb8b1a7ebdc041d186, type: 2}
+  iconGenShader: {fileID: 4800000, guid: e4bed89666a0f466fba7fc165389648a, type: 3}
 --- !u!114 &601124375
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -945,13 +946,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 0
-    m_Right: 0
-    m_Top: 0
-    m_Bottom: 0
-  m_ChildAlignment: 1
-  m_Spacing: 0
-  m_ChildForceExpandWidth: 1
+    m_Left: 4
+    m_Right: 4
+    m_Top: 4
+    m_Bottom: 4
+  m_ChildAlignment: 5
+  m_Spacing: 4
+  m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 0
   m_ChildControlHeight: 1
@@ -1677,7 +1678,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.6084906, b: 0.6084906, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
