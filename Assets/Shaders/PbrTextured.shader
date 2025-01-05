@@ -76,6 +76,7 @@ Shader "Unlit/PbrTextured"
             fixed4 _TextureST;
             
             sampler2D _AmbientOcclusionMap;
+            samplerCUBE _UnfilteredEnvironment;
 
             fixed4 frag (v2f i) : SV_Target
             {
@@ -153,14 +154,16 @@ Shader "Unlit/PbrTextured"
                 float3 indirectDiffuseRatio = 1.0 - indirectSpecularRatio;
                 indirectDiffuseRatio *= 1.0 - metallic;
                 
-                float4 irradiance = texCUBE(_IndirectDiffuseMap, normal);
+                float4 irradiance = texCUBElod(_IndirectDiffuseMap, float4(normal, 0));
+                //irradiance.rgb = DecodeHDR(irradiance, float4(5,1,0,1));
+                //return irradiance;
                 float3 diffuse = irradiance.rgb * albedo;
 
                 float3 reflection = reflect(-view, normal);
                 float4 prefilteredColor = texCUBElod(_IndirectSpecularMap, float4(reflection, roughness * MAX_REFLECTION_LOD));
                 float2 envBrdf = tex2D(_BrdfLut, float2(nDotV, roughness)).rg;
                 float3 specular = prefilteredColor.rgb * (fresnelFactor * envBrdf.x + envBrdf.y);
-                
+
                 float3 ambient = (indirectDiffuseRatio * diffuse + specular) * ao;
                 
                 col.rgb = ambient + lightOut;

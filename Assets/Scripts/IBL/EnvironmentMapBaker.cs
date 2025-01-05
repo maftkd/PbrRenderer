@@ -20,6 +20,8 @@ public class EnvironmentMapBaker : MonoBehaviour
     public GameObject loadingPanel;
     public Action DoneBaking;
 
+    public int debugFace;
+
     void Start()
     {
         //BakeDiffuse();
@@ -45,16 +47,15 @@ public class EnvironmentMapBaker : MonoBehaviour
         
         Camera cam = GetComponent<Camera>();
 
-        //RenderBaseCubemap();
         Shader.SetGlobalTexture("_UnfilteredEnvironment", rawCubemap);
         
         proxyGeo.SetActive(true);
         cam.SetReplacementShader(diffuseConvolution, "RenderType");
         
-        //Cubemap indirectDiffuseMap = new Cubemap(diffuseMapSize, TextureFormat.RGBAHalf, false);
         RenderTexture indirectDiffuseMap = new RenderTexture(diffuseMapSize, diffuseMapSize, 0, RenderTextureFormat.ARGBHalf);
+        indirectDiffuseMap.wrapMode = TextureWrapMode.Clamp;
         indirectDiffuseMap.dimension = UnityEngine.Rendering.TextureDimension.Cube;
-        cam.RenderToCubemap(indirectDiffuseMap);
+        cam.RenderToCubemap(indirectDiffuseMap, debugFace > 0 ? debugFace : 63);
         
         cam.ResetReplacementShader();
         proxyGeo.SetActive(false);

@@ -36,11 +36,11 @@ Shader "Unlit/DiffuseConvolution"
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.uv = v.uv;
-                o.eyeRay = normalize(v.vertex.xyz);
+                o.eyeRay = v.vertex.xyz;
                 return o;
             }
 
-            samplerCUBE_half _UnfilteredEnvironment;
+            samplerCUBE _UnfilteredEnvironment;
 
             fixed4 frag (v2f i) : SV_Target
             {
@@ -63,7 +63,7 @@ Shader "Unlit/DiffuseConvolution"
                         //tangent space to world
                         float3 sampleVec = tangentSample.x * right + tangentSample.y * up + tangentSample.z * normal;
 
-                        float4 radiance = texCUBE(_UnfilteredEnvironment, sampleVec);
+                        float4 radiance = texCUBElod(_UnfilteredEnvironment, float4(sampleVec,1));
                         radiance.rgb = DecodeHDR(radiance, float4(5, 1, 0, 1));
                         irradiance += radiance.rgb * cos(theta) * sin(theta);
                         nrSamples++;

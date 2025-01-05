@@ -43,6 +43,8 @@ public class EnvironmentPanel : MonoBehaviour
         }
         RenderTexture.active = active;
         iconRT.Release();
+        
+        _buttons[0].onClick.Invoke();
     }
 
     void SendBakeRequest(Button button)
