@@ -3,6 +3,7 @@ float _PointLightCount;
 samplerCUBE_half _IndirectDiffuseMap;
 samplerCUBE_half _IndirectSpecularMap;
 sampler2D _BrdfLut;
+static const float MAX_REFLECTION_LOD = 4.0;
 
 float distributionGGX(float3 normal, float3 halfVec, float roughness)
 {

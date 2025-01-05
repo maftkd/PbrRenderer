@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.5511805, g: 0.6343715, b: 0.7292028, a: 1}
+  m_IndirectSpecularColor: {r: 0.37020305, g: 0.31253302, b: 0.2943709, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -880,7 +880,7 @@ RectTransform:
   m_Father: {fileID: 1806880921}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMin: {x: 0.55, y: 0}
   m_AnchorMax: {x: 1, y: 0.1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
@@ -904,7 +904,6 @@ MonoBehaviour:
   - {fileID: 8900000, guid: 04bfe9229de6de8429dbd8c69b781954, type: 3}
   - {fileID: 8900000, guid: de78f930088fc194290da7400c89bfb5, type: 3}
   - {fileID: 8900000, guid: db7181019334d5d4d92c11195d4538df, type: 3}
-  - {fileID: 8900000, guid: 7fc2653da6898814f93819c59db5cc4b, type: 3}
   - {fileID: 8900000, guid: bf543123825a64e4bb3f5d9fe090a58f, type: 3}
   mapBaker: {fileID: 229335994}
   skyboxMaterial: {fileID: 2100000, guid: 9fa036ea6d2514eb8b1a7ebdc041d186, type: 2}
@@ -1928,6 +1927,18 @@ PrefabInstance:
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 240ce3572cf9540c0ae4611e1e783f73, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 240ce3572cf9540c0ae4611e1e783f73, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 240ce3572cf9540c0ae4611e1e783f73, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 240ce3572cf9540c0ae4611e1e783f73, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0
       objectReference: {fileID: 0}
@@ -1967,6 +1978,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 240ce3572cf9540c0ae4611e1e783f73, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: -2859109400176981367, guid: 240ce3572cf9540c0ae4611e1e783f73, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -1981,7 +1996,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 240ce3572cf9540c0ae4611e1e783f73, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 240ce3572cf9540c0ae4611e1e783f73, type: 3}

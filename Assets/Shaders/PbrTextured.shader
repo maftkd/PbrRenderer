@@ -9,6 +9,7 @@ Shader "Unlit/PbrTextured"
         _RoughnessMap ("Roughness Map", 2D) = "white" {}
         _AmbientOcclusionMap("Ambient Occlusion Map", 2D) = "white" {}
         _TextureST("Texture ST", Vector) = (1, 1, 0, 0)
+        [Toggle] _FlipUVs ("Flip UVs", Range(0,1)) = 0
     }
     SubShader
     {
@@ -43,6 +44,7 @@ Shader "Unlit/PbrTextured"
             };
 
 
+            fixed _FlipUVs;
             v2f vert (appdata v)
             {
                 v2f o;
@@ -59,6 +61,10 @@ Shader "Unlit/PbrTextured"
                 o.tspace2 = half3(wTangent.z, wBitangent.z, worldNormal.z);
                 
                 o.uv = v.uv;
+                if(_FlipUVs)
+                {
+                    o.uv.y = 1 - o.uv.y;
+                }
                 return o;
             }
 
@@ -151,7 +157,6 @@ Shader "Unlit/PbrTextured"
                 float3 diffuse = irradiance.rgb * albedo;
 
                 float3 reflection = reflect(-view, normal);
-                const float MAX_REFLECTION_LOD = 8.0;
                 float4 prefilteredColor = texCUBElod(_IndirectSpecularMap, float4(reflection, roughness * MAX_REFLECTION_LOD));
                 float2 envBrdf = tex2D(_BrdfLut, float2(nDotV, roughness)).rg;
                 float3 specular = prefilteredColor.rgb * (fresnelFactor * envBrdf.x + envBrdf.y);
