@@ -1,11 +1,7 @@
-using System.Diagnostics;
 using UnityEngine;
-using Debug = UnityEngine.Debug;
 
 public class LightingManager : MonoBehaviour
 {
-    public Cubemap indirectDiffuseMap;
-    public Cubemap indirectSpecularMap;
     public Texture2D brdfLUT;
     
     // Start is called before the first frame update
@@ -35,8 +31,8 @@ public class LightingManager : MonoBehaviour
         
         Shader.SetGlobalFloatArray("_PointLightData", pointLightData);
         Shader.SetGlobalFloat("_PointLightCount", pointLights.Length);
-        Shader.SetGlobalTexture("_IndirectDiffuseMap", indirectDiffuseMap);
-        Shader.SetGlobalTexture("_IndirectSpecularMap", indirectSpecularMap);
+        //Shader.SetGlobalTexture("_IndirectDiffuseMap", indirectDiffuseMap);
+        //Shader.SetGlobalTexture("_IndirectSpecularMap", indirectSpecularMap);
         Shader.SetGlobalTexture("_BrdfLut", brdfLUT);
     }
 

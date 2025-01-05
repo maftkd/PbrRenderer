@@ -4,11 +4,12 @@ Shader "Unlit/SimpleSkybox"
     {
         _Cubemap ("Cubemap", CUBE) = "" {}
         
+        [Toggle] _DoTest ("Test", Float) = 0
     }
     SubShader
     {
         Tags { "Queue"="Background" "RenderType"="Background" "PreviewType"="Skybox" }
-        Cull Off ZWrite Off
+        //Cull Off ZWrite Off
         LOD 100
 
         Pass
@@ -40,11 +41,18 @@ Shader "Unlit/SimpleSkybox"
 
             samplerCUBE_half _Cubemap;
             half4 _Cubemap_HDR;
+            samplerCUBE_half _TestCube;
+            fixed _DoTest;
 
             fixed4 frag (v2f i) : SV_Target
             {
                 float3 eyeRay = normalize(i.eyeRay);
 
+                if(_DoTest > 0)
+                {
+                    fixed4 col = texCUBE(_TestCube, eyeRay);
+                    return col;
+                }
                 //sample hdr map
                 fixed4 envColor = texCUBE(_Cubemap, eyeRay);
                 envColor.rgb = DecodeHDR (envColor, _Cubemap_HDR);

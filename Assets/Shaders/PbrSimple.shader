@@ -105,7 +105,7 @@ Shader "Unlit/PbrSimple"
                 float3 diffuse = irradiance * _Albedo.rgb;// / UNITY_PI;
 
                 float3 reflection = reflect(-view, normal);
-                const float MAX_REFLECTION_LOD = 7.0;
+                const float MAX_REFLECTION_LOD = 8.0;
                 float3 prefilteredColor = texCUBElod(_IndirectSpecularMap, float4(reflection, _Roughness * MAX_REFLECTION_LOD)).rgb;
                 float2 envBrdf = tex2D(_BrdfLut, float2(nDotV, _Roughness)).rg;
                 float3 specular = prefilteredColor * (fresnelFactor * envBrdf.x + envBrdf.y);
