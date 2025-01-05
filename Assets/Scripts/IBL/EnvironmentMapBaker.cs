@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -17,6 +18,7 @@ public class EnvironmentMapBaker : MonoBehaviour
     private bool _baking = false;
     public TextMeshProUGUI progressText;
     public GameObject loadingPanel;
+    public Action DoneBaking;
 
     void Start()
     {
@@ -94,6 +96,7 @@ public class EnvironmentMapBaker : MonoBehaviour
 
         _baking = false;
         loadingPanel.SetActive(false);
+        DoneBaking?.Invoke();
     }
 
     /*
