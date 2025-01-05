@@ -147,14 +147,14 @@ Shader "Unlit/PbrTextured"
                 float3 indirectDiffuseRatio = 1.0 - indirectSpecularRatio;
                 indirectDiffuseRatio *= 1.0 - metallic;
                 
-                float3 irradiance = texCUBE(_IndirectDiffuseMap, normal).rgb;
-                float3 diffuse = irradiance * albedo;// / UNITY_PI;
+                float4 irradiance = texCUBE(_IndirectDiffuseMap, normal);
+                float3 diffuse = irradiance.rgb * albedo;
 
                 float3 reflection = reflect(-view, normal);
                 const float MAX_REFLECTION_LOD = 7.0;
-                float3 prefilteredColor = texCUBElod(_IndirectSpecularMap, float4(reflection, roughness * MAX_REFLECTION_LOD)).rgb;
+                float4 prefilteredColor = texCUBElod(_IndirectSpecularMap, float4(reflection, roughness * MAX_REFLECTION_LOD));
                 float2 envBrdf = tex2D(_BrdfLut, float2(nDotV, roughness)).rg;
-                float3 specular = prefilteredColor * (fresnelFactor * envBrdf.x + envBrdf.y);
+                float3 specular = prefilteredColor.rgb * (fresnelFactor * envBrdf.x + envBrdf.y);
                 
                 float3 ambient = (indirectDiffuseRatio * diffuse + specular) * ao;
                 

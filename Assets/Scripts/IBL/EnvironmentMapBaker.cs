@@ -11,10 +11,13 @@ public class EnvironmentMapBaker : MonoBehaviour
 
     public Shader diffuseConvolution;
     public Shader specularConvolution;
+    //public Shader baseCubemapSampler;
 
     public int baseMapSize;
     public int diffuseMapSize;
     public int specularMapSize;
+
+    public Cubemap rawCubemap;
 
     void RenderBaseCubemap()
     {
@@ -26,12 +29,27 @@ public class EnvironmentMapBaker : MonoBehaviour
         cam.RenderToCubemap(cubeRT);
     }
     
+    //for some reason this ends up weird and grainy
     [ContextMenu("Bake Base cubemap")]
     public void BakeBaseCubemap()
     {
         Camera cam = GetComponent<Camera>();
-        Cubemap cubemap = new Cubemap(baseMapSize, TextureFormat.RGBAHalf, false);
+        cam.allowHDR = true;
+        Cubemap cubemap = new Cubemap(baseMapSize, TextureFormat.RGB24, false);
         cam.RenderToCubemap(cubemap);
+        
+        /*
+        Shader.SetGlobalTexture("_UnfilteredEnvironment", rawCubemap);
+        
+        cam.SetReplacementShader(baseCubemapSampler, "RenderType");
+        proxyGeo.SetActive(true);
+        
+        cam.RenderToCubemap(cubemap);
+        
+        proxyGeo.SetActive(false);
+        cam.ResetReplacementShader();
+        
+        */
         AssetDatabase.CreateAsset(cubemap, $"Assets/Textures/{filename}_base.asset");
     }
 
@@ -40,7 +58,8 @@ public class EnvironmentMapBaker : MonoBehaviour
     {
         Camera cam = GetComponent<Camera>();
 
-        RenderBaseCubemap();
+        //RenderBaseCubemap();
+        Shader.SetGlobalTexture("_UnfilteredEnvironment", rawCubemap);
         
         proxyGeo.SetActive(true);
         cam.SetReplacementShader(diffuseConvolution, "RenderType");
@@ -59,7 +78,8 @@ public class EnvironmentMapBaker : MonoBehaviour
     {
         Camera cam = GetComponent<Camera>();
         
-        RenderBaseCubemap();
+        //RenderBaseCubemap();
+        Shader.SetGlobalTexture("_UnfilteredEnvironment", rawCubemap);
         
         int mapSize = specularMapSize;
 

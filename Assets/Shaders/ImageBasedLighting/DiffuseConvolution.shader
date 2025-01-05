@@ -62,8 +62,10 @@ Shader "Unlit/DiffuseConvolution"
                         float3 tangentSample = float3(sin(theta) * cos(phi), sin(theta) * sin(phi), cos(theta));
                         //tangent space to world
                         float3 sampleVec = tangentSample.x * right + tangentSample.y * up + tangentSample.z * normal;
-                        
-                        irradiance += texCUBE(_UnfilteredEnvironment, sampleVec).rgb * cos(theta) * sin(theta);
+
+                        float4 radiance = texCUBE(_UnfilteredEnvironment, sampleVec);
+                        radiance.rgb = DecodeHDR(radiance, float4(5, 1, 0, 1));
+                        irradiance += radiance.rgb * cos(theta) * sin(theta);
                         nrSamples++;
                     }
                 }
@@ -71,10 +73,6 @@ Shader "Unlit/DiffuseConvolution"
 
                 irradiance = UNITY_PI * irradiance * (1.0 / nrSamples);
                 return float4(irradiance, 1.0);
-                
-                //float3 envColor = texCUBE(_UnfilteredEnvironment, i.eyeRay).rgb;
-                //return fixed4(envColor,1);
-                return 0;
             }
             ENDCG
         }

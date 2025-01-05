@@ -62,7 +62,9 @@ Shader "Unlit/SpecularConvolution"
                     float nDotL = saturate(dot(normal, light));
                     if(nDotL > 0)
                     {
-                        prefilteredColor += texCUBE(_UnfilteredEnvironment, light).rgb * nDotL;
+                        float4 radiance = texCUBE(_UnfilteredEnvironment, light);
+                        radiance.rgb = DecodeHDR(radiance, float4(5, 1, 0, 1));
+                        prefilteredColor += radiance.rgb * nDotL;
                         totalWeight += nDotL;
                     }
                 }

@@ -37,16 +37,21 @@ Shader "Unlit/SimpleSkybox"
                 o.eyeRay = normalize(v.vertex.xyz);
                 return o;
             }
-            
+
             samplerCUBE_half _Cubemap;
+            half4 _Cubemap_HDR;
 
             fixed4 frag (v2f i) : SV_Target
             {
-                fixed3 envColor = texCUBE(_Cubemap, i.eyeRay).rgb;
-                //float luminance = dot(envColor, float3(0.299, 0.587, 0.114));
-                //return step(0.99, luminance);
+                float3 eyeRay = normalize(i.eyeRay);
+
+                //sample hdr map
+                fixed4 envColor = texCUBE(_Cubemap, eyeRay);
+                envColor.rgb = DecodeHDR (envColor, _Cubemap_HDR);
+                
+                //encode to gamma since we gamma correct everything in post
                 envColor = pow(envColor, 2.2);
-                return fixed4(envColor, 1.0);
+                return envColor;
             }
             ENDCG
         }
