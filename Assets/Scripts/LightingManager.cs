@@ -9,13 +9,12 @@ public class LightingManager : MonoBehaviour
     private static int MAX_LIGHTS = 16;
     void Start()
     {
-        UpdatePointLightData();
         Shader.SetGlobalTexture("_BrdfLut", brdfLUT);
     }
 
-    public void UpdatePointLightData()
+    public void UpdatePointLightData(bool updateList = false)
     {
-        if (_pointLights == null)
+        if (_pointLights == null || updateList)
         {
             _pointLights = GetComponentsInChildren<PointLight>();
         }

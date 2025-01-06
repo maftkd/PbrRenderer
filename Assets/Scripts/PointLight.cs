@@ -12,6 +12,7 @@ public class PointLight : MonoBehaviour
     void Start()
     {
         _lightingManager = transform.parent.GetComponent<LightingManager>();
+        UpdateLightingData(true);
         
     }
 
@@ -21,8 +22,8 @@ public class PointLight : MonoBehaviour
         
     }
 
-    public void UpdateLightingData()
+    public void UpdateLightingData(bool updateList = false)
     {
-        _lightingManager.UpdatePointLightData();
+        _lightingManager.UpdatePointLightData(updateList);
     }
 }
