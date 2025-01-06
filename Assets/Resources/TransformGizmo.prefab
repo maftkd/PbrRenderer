@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3431572605431077845}
   - component: {fileID: 7529951383183206172}
   - component: {fileID: 7961135851059948553}
+  - component: {fileID: 3263430045710279109}
   m_Layer: 7
   m_Name: UpArrow
   m_TagString: Untagged
@@ -83,6 +84,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &3263430045710279109
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3388405777304167869}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4019234525060620036, guid: ebeb2b440ae344c038c0e646014f0288, type: 3}
 --- !u!1 &4933356732930746378
 GameObject:
   m_ObjectHideFlags: 0
@@ -450,6 +465,7 @@ GameObject:
   - component: {fileID: 476337196596443588}
   - component: {fileID: 7302869343454183161}
   - component: {fileID: 2703534089927712003}
+  - component: {fileID: 807851583849877012}
   m_Layer: 7
   m_Name: ForwardArrow
   m_TagString: Untagged
@@ -522,6 +538,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &807851583849877012
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8728289216208976473}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4019234525060620036, guid: ebeb2b440ae344c038c0e646014f0288, type: 3}
 --- !u!1 &8853984481754079786
 GameObject:
   m_ObjectHideFlags: 0
@@ -630,6 +660,8 @@ GameObject:
   - component: {fileID: 3598558222497393136}
   - component: {fileID: 5951328555489881703}
   - component: {fileID: 2302899661971683885}
+  - component: {fileID: 3921966522460402328}
+  - component: {fileID: 3157440025602097504}
   m_Layer: 7
   m_Name: RightArrow
   m_TagString: Untagged
@@ -702,3 +734,45 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &3921966522460402328
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9038886430418369444}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4019234525060620036, guid: ebeb2b440ae344c038c0e646014f0288, type: 3}
+--- !u!114 &3157440025602097504
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9038886430418369444}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81386885a62b94bfea16cbf37ed28f79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveTarget: {fileID: 4261031458844357126}
+  OnDrag:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7237217362696396568}
+        m_TargetAssemblyTypeName: TransformGizmo, Assembly-CSharp
+        m_MethodName: Translate
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2

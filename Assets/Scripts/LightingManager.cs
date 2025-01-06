@@ -3,23 +3,33 @@ using UnityEngine;
 public class LightingManager : MonoBehaviour
 {
     public Texture2D brdfLUT;
+    private PointLight[] _pointLights;
     
     // Start is called before the first frame update
     private static int MAX_LIGHTS = 16;
     void Start()
     {
-        PointLight[] pointLights = GetComponentsInChildren<PointLight>();
-        float[] pointLightData = new float[MAX_LIGHTS * 6];
-        for (int i = 0; i < pointLights.Length && i < MAX_LIGHTS; i++)
+        UpdatePointLightData();
+        Shader.SetGlobalTexture("_BrdfLut", brdfLUT);
+    }
+
+    public void UpdatePointLightData()
+    {
+        if (_pointLights == null)
         {
-            pointLightData[i * 6] = pointLights[i].transform.position.x;
-            pointLightData[i * 6 + 1] = pointLights[i].transform.position.y;
-            pointLightData[i * 6 + 2] = pointLights[i].transform.position.z;
-            pointLightData[i * 6 + 3] = pointLights[i].color.r;
-            pointLightData[i * 6 + 4] = pointLights[i].color.g;
-            pointLightData[i * 6 + 5] = pointLights[i].color.b;
+            _pointLights = GetComponentsInChildren<PointLight>();
         }
-        for(int i = pointLights.Length; i < MAX_LIGHTS; i++)
+        float[] pointLightData = new float[MAX_LIGHTS * 6];
+        for (int i = 0; i < _pointLights.Length && i < MAX_LIGHTS; i++)
+        {
+            pointLightData[i * 6] = _pointLights[i].transform.position.x;
+            pointLightData[i * 6 + 1] = _pointLights[i].transform.position.y;
+            pointLightData[i * 6 + 2] = _pointLights[i].transform.position.z;
+            pointLightData[i * 6 + 3] = _pointLights[i].color.r;
+            pointLightData[i * 6 + 4] = _pointLights[i].color.g;
+            pointLightData[i * 6 + 5] = _pointLights[i].color.b;
+        }
+        for(int i = _pointLights.Length; i < MAX_LIGHTS; i++)
         {
             pointLightData[i * 6] = 0;
             pointLightData[i * 6 + 1] = 0;
@@ -30,10 +40,7 @@ public class LightingManager : MonoBehaviour
         }
         
         Shader.SetGlobalFloatArray("_PointLightData", pointLightData);
-        Shader.SetGlobalFloat("_PointLightCount", pointLights.Length);
-        //Shader.SetGlobalTexture("_IndirectDiffuseMap", indirectDiffuseMap);
-        //Shader.SetGlobalTexture("_IndirectSpecularMap", indirectSpecularMap);
-        Shader.SetGlobalTexture("_BrdfLut", brdfLUT);
+        Shader.SetGlobalFloat("_PointLightCount", _pointLights.Length);
     }
 
     // Update is called once per frame
