@@ -101,16 +101,22 @@ Shader "Unlit/PbrSimple"
                 float3 indirectDiffuseRatio = 1.0 - indirectSpecularRatio;
                 indirectDiffuseRatio *= 1.0 - _Metallic;
                 
-                float3 irradiance = texCUBE(_IndirectDiffuseMap, normal).rgb;
+                float3 irradiance = texCUBElod(_IndirectDiffuseMap, float4(normal, 0)).rgb;
                 float3 diffuse = irradiance * _Albedo.rgb;// / UNITY_PI;
 
                 float3 reflection = reflect(-view, normal);
-                float3 prefilteredColor = texCUBElod(_IndirectSpecularMap, float4(reflection, _Roughness * MAX_REFLECTION_LOD)).rgb;
+                float4 prefilteredColor = texCUBElod(_IndirectSpecularMap, float4(reflection, _Roughness * MAX_REFLECTION_LOD));
+                //prefilteredColor.rgb = DecodeHDR(prefilteredColor, float4(5,1,0,1));
+                //float debugMip = _Roughness * MAX_REFLECTION_LOD;
+                //float debugMip = 7;
+                //float4 debug = texCUBElod(_IndirectSpecularMap, float4(reflection, debugMip));
+                //return debug;
                 float2 envBrdf = tex2D(_BrdfLut, float2(nDotV, _Roughness)).rg;
                 float3 specular = prefilteredColor * (fresnelFactor * envBrdf.x + envBrdf.y);
                 
                 float3 ambient = (indirectDiffuseRatio * diffuse + specular) * ao;
-                
+
+                //ambient = 0;
                 col.rgb = ambient + lightOut;
 
                 return col;

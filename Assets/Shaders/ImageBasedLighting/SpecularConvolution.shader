@@ -48,10 +48,13 @@ Shader "Unlit/SpecularConvolution"
                 float3 normal = normalize(IN.localPos);
                 float3 reflection = normal;
                 float3 view = reflection;
+                //return float4(normal, 1);
+                //float4 radiance = texCUBElod(_UnfilteredEnvironment, float4(normal, 1));
+                //return radiance;
 
                 const uint numSamples = 1024;
                 float totalWeight = 0;
-                float3 prefilteredColor = 0;
+                float4 prefilteredColor = 0;
 
                 for(uint i = 0; i < numSamples; i++)
                 {
@@ -62,15 +65,16 @@ Shader "Unlit/SpecularConvolution"
                     float nDotL = saturate(dot(normal, light));
                     if(nDotL > 0)
                     {
-                        float4 radiance = texCUBElod(_UnfilteredEnvironment, float4(light, 1));
+                        float4 radiance = texCUBElod(_UnfilteredEnvironment, float4(light, 0));
                         radiance.rgb = DecodeHDR(radiance, float4(5, 1, 0, 1));
-                        prefilteredColor += radiance.rgb * nDotL;
+                        prefilteredColor += radiance * nDotL;
                         totalWeight += nDotL;
                     }
                 }
 
                 prefilteredColor /= totalWeight;
-                return float4(prefilteredColor.rgb, 1);
+                return prefilteredColor;
+                //return float4(prefilteredColor.rgb, 1);
             }
             ENDCG
         }

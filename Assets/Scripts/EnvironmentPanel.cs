@@ -53,6 +53,7 @@ public class EnvironmentPanel : MonoBehaviour
         Cubemap cubemap = environments[envIndex];
         mapBaker.BakeMap(cubemap);
         skyboxMaterial.SetTexture("_Cubemap", cubemap);
+        Shader.SetGlobalTexture("_IndirectSpecularMap", cubemap);
         foreach (Button butt in _buttons)
         {
             butt.interactable = false;

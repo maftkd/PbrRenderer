@@ -54,8 +54,8 @@ Shader "Unlit/SimpleSkybox"
                     return col;
                 }
                 //sample hdr map
-                fixed4 envColor = texCUBE(_Cubemap, eyeRay);
-                envColor.rgb = DecodeHDR (envColor, _Cubemap_HDR);
+                fixed4 envColor = texCUBElod(_Cubemap, float4(eyeRay, 0));
+                //envColor.rgb = DecodeHDR (envColor, float4(5,1,0,1));
                 
                 //encode to gamma since we gamma correct everything in post
                 envColor = pow(envColor, 2.2);

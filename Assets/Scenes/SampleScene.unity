@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.5544762, g: 0.6371438, b: 0.72418463, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -172,7 +172,14 @@ MonoBehaviour:
   specularConvolution: {fileID: 4800000, guid: 2a5edfc7951094d7abcc4b599ba1520d, type: 3}
   diffuseMapSize: 512
   specularMapSize: 512
-  rawCubemap: {fileID: 8900000, guid: 1cde0e200e792cb4491204276a656490, type: 3}
+  rawCubemap: {fileID: 8900000, guid: bf543123825a64e4bb3f5d9fe090a58f, type: 3}
+  rawCubemaps:
+  - {fileID: 8900000, guid: de78f930088fc194290da7400c89bfb5, type: 3}
+  - {fileID: 8900000, guid: 1cde0e200e792cb4491204276a656490, type: 3}
+  - {fileID: 8900000, guid: 656a59a5ff93c46498416d97e5c16b66, type: 3}
+  - {fileID: 8900000, guid: 819f67f916b929f4f9fdd391a19b9f6b, type: 3}
+  - {fileID: 8900000, guid: 04bfe9229de6de8429dbd8c69b781954, type: 3}
+  - {fileID: 8900000, guid: bf543123825a64e4bb3f5d9fe090a58f, type: 3}
   progressText: {fileID: 646934530}
   loadingPanel: {fileID: 1943824508}
   debugFace: 0
@@ -576,13 +583,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   environments:
-  - {fileID: 8900000, guid: de78f930088fc194290da7400c89bfb5, type: 3}
-  - {fileID: 8900000, guid: 1cde0e200e792cb4491204276a656490, type: 3}
-  - {fileID: 8900000, guid: 656a59a5ff93c46498416d97e5c16b66, type: 3}
-  - {fileID: 8900000, guid: 819f67f916b929f4f9fdd391a19b9f6b, type: 3}
-  - {fileID: 8900000, guid: 04bfe9229de6de8429dbd8c69b781954, type: 3}
-  - {fileID: 8900000, guid: db7181019334d5d4d92c11195d4538df, type: 3}
-  - {fileID: 8900000, guid: bf543123825a64e4bb3f5d9fe090a58f, type: 3}
+  - {fileID: 8900000, guid: 229b1c91bdc9447b581b48adbfc25df4, type: 2}
+  - {fileID: 8900000, guid: 6d6b9cdca6aaa4736b33620eded47891, type: 2}
+  - {fileID: 8900000, guid: 66983b4dbc45f4d4382fa4f9f619f984, type: 2}
+  - {fileID: 8900000, guid: 834e22e71cf4c4f929c1c4126f7e8728, type: 2}
+  - {fileID: 8900000, guid: a4eaa74d1e4464c6fa8f85b5bb328f2f, type: 2}
+  - {fileID: 8900000, guid: 0e036892f8b7d48bfb94730a895febc5, type: 2}
   mapBaker: {fileID: 229335994}
   skyboxMaterial: {fileID: 2100000, guid: 9fa036ea6d2514eb8b1a7ebdc041d186, type: 2}
   iconGenShader: {fileID: 4800000, guid: e4bed89666a0f466fba7fc165389648a, type: 3}
@@ -1420,7 +1426,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 275786b97e454462098a0d8024db4c54, type: 2}
   - {fileID: 2100000, guid: e1f7e320afd4a4b52ad0284aebcdd6d1, type: 2}
   - {fileID: 2100000, guid: 69c32d795a6db4037aa7339a794a2125, type: 2}
-  - {fileID: 2100000, guid: 48958d77e8ab04154ad2134573f2f5c2, type: 2}
   - {fileID: 2100000, guid: 84877ffb087de41a399e65d6f7068053, type: 2}
   targetRenderers:
   - {fileID: 1215703370}

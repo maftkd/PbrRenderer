@@ -1,6 +1,9 @@
 using System;
 using System.Collections;
 using TMPro;
+#if UNITY_EDITOR || UNITY_EDITOR_OSX
+using UnityEditor;
+#endif
 using UnityEngine;
 
 public class EnvironmentMapBaker : MonoBehaviour
@@ -14,6 +17,7 @@ public class EnvironmentMapBaker : MonoBehaviour
     public int specularMapSize;
 
     public Cubemap rawCubemap;
+    public Cubemap[] rawCubemaps;
 
     private bool _baking = false;
     public TextMeshProUGUI progressText;
@@ -33,11 +37,11 @@ public class EnvironmentMapBaker : MonoBehaviour
         if (!_baking)
         {
             rawCubemap = cubemap;
-            StartCoroutine(BakeMaps());
+            StartCoroutine(BakeMap());
         }
     }
 
-    private IEnumerator BakeMaps()
+    private IEnumerator BakeMap()
     {
         loadingPanel.SetActive(true);
         _baking = true;
@@ -66,35 +70,6 @@ public class EnvironmentMapBaker : MonoBehaviour
         UpdateProgressText(step);
         yield return null;
 
-        int mapSize = specularMapSize;
-
-        Cubemap cubemap = new Cubemap(mapSize, TextureFormat.RGBAHalf, true);
-        cubemap.filterMode = FilterMode.Trilinear;
-        int numMips = cubemap.mipmapCount;
-        
-        proxyGeo.SetActive(true);
-        cam.SetReplacementShader(specularConvolution, "RenderType");
-        for(int i = 0; i < numMips; i++)
-        {
-            float roughness = (float)i / (numMips - 1);
-            Shader.SetGlobalFloat("_BakeRoughness", roughness);
-            Cubemap mipCubemap = new Cubemap(mapSize >> i, TextureFormat.RGBAHalf, false);
-            cam.RenderToCubemap(mipCubemap);
-
-            for (int face = 0; face < 6; face++)
-            {
-                Graphics.CopyTexture(mipCubemap, face, 0, cubemap, face, i);
-            }
-            step++;
-            UpdateProgressText(step);
-            yield return null;
-        }
-        
-        cam.ResetReplacementShader();
-        proxyGeo.SetActive(false);
-        
-        Shader.SetGlobalTexture("_IndirectSpecularMap", cubemap);
-
         _baking = false;
         loadingPanel.SetActive(false);
         DoneBaking?.Invoke();
@@ -121,7 +96,20 @@ public class EnvironmentMapBaker : MonoBehaviour
         
         Shader.SetGlobalTexture("_IndirectDiffuseMap", indirectDiffuseMap);
     }
+    */
+
+    [ContextMenu("Bake all specular maps")]
+    public void BakeAllSpecular()
+    {
+        foreach (Cubemap cubemap in rawCubemaps)
+        {
+            rawCubemap = cubemap;
+            Debug.Log("Baking: " + cubemap.name);
+            BakeSpecular();
+        }
+    }
     
+    [ContextMenu("Bake Indirect Specular")]
     public void BakeSpecular()
     {
         Camera cam = GetComponent<Camera>();
@@ -153,9 +141,12 @@ public class EnvironmentMapBaker : MonoBehaviour
         cam.ResetReplacementShader();
         proxyGeo.SetActive(false);
         
-        Shader.SetGlobalTexture("_IndirectSpecularMap", cubemap);
+        //Shader.SetGlobalTexture("_IndirectSpecularMap", cubemap);
+        
+#if unity_editor || UNITY_EDITOR_OSX
+        AssetDatabase.CreateAsset(cubemap, $"Assets/Textures/Specular_{rawCubemap.name}.asset");
+#endif
     }
-    */
 
     void UpdateProgressText(int curStep)
     {
