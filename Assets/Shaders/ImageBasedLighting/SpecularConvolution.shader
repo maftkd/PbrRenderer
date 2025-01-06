@@ -45,9 +45,12 @@ Shader "Unlit/SpecularConvolution"
 
             fixed4 frag (v2f IN) : SV_Target
             {
-                float3 normal = normalize(IN.localPos);
+                float3 worldPos = mul(unity_ObjectToWorld, float4(IN.localPos, 1)).xyz;
+                float3 normal = normalize(worldPos);
                 float3 reflection = normal;
                 float3 view = reflection;
+                //return float4(worldPos, 1);
+                //return float4(IN.uv, 0, 1);
                 //return float4(normal, 1);
                 //float4 radiance = texCUBElod(_UnfilteredEnvironment, float4(normal, 1));
                 //return radiance;

@@ -82,7 +82,8 @@ Shader "Unlit/PbrTextured"
             {
                 float4 col = 0;
                 float3 lightOut = 0;
-                
+
+                //return float4(i.uv, 0, 1);
                 //float3 normal = normalize(i.worldNormal);
                 //return fixed4(i.uv, 0, 1);
                 half3 normal;
@@ -163,9 +164,8 @@ Shader "Unlit/PbrTextured"
                 float3 reflection = reflect(-view, normal);
                 float4 prefilteredColor = texCUBElod(_IndirectSpecularMap, float4(reflection, roughness * MAX_REFLECTION_LOD));
                 //prefilteredColor.rgb = DecodeHDR(prefilteredColor, float4(5,1,0,1));
-                //float4 debug = texCUBElod(_IndirectSpecularMap, float4(reflection, 0));
+                //float4 debug = texCUBElod(_IndirectSpecularMap, float4(reflection, 4));
                 //float4 debug = texCUBE(_IndirectSpecularMap, reflection);
-                //float4 debug = texCUBElod(_MipCubemap, float4(reflection, 0));
                 //return debug;
                 float2 envBrdf = tex2D(_BrdfLut, float2(nDotV, roughness)).rg;
                 float3 specular = prefilteredColor.rgb * (fresnelFactor * envBrdf.x + envBrdf.y);

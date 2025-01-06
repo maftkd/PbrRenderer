@@ -12,6 +12,7 @@ public class EnvironmentMapBaker : MonoBehaviour
 
     public Shader diffuseConvolution;
     public Shader specularConvolution;
+    public Shader blitShader;
 
     public int diffuseMapSize;
     public int specularMapSize;
@@ -37,11 +38,11 @@ public class EnvironmentMapBaker : MonoBehaviour
         if (!_baking)
         {
             rawCubemap = cubemap;
-            StartCoroutine(BakeMap());
+            StartCoroutine(BakeMaps());
         }
     }
 
-    private IEnumerator BakeMap()
+    private IEnumerator BakeMaps()
     {
         loadingPanel.SetActive(true);
         _baking = true;
@@ -69,10 +70,105 @@ public class EnvironmentMapBaker : MonoBehaviour
         step++;
         UpdateProgressText(step);
         yield return null;
+        
+        int mapSize = specularMapSize;
+        RenderTexture indirectSpecularMap = new RenderTexture(mapSize, mapSize, 0, RenderTextureFormat.ARGBHalf);
+        indirectSpecularMap.dimension = UnityEngine.Rendering.TextureDimension.Cube;
+        indirectSpecularMap.useMipMap = true;
+        indirectSpecularMap.autoGenerateMips = false;
+        int numMips = indirectSpecularMap.mipmapCount;
+        Debug.Log("Num mips: " + numMips);
+        
+        proxyGeo.SetActive(true);
+        cam.SetReplacementShader(specularConvolution, "RenderType");
+        Material mat = new Material(blitShader);
+        for (int i = 0; i < numMips; i++)
+        {
+            RenderTexture mipTexture = new RenderTexture(mapSize >> i, mapSize >> i, 8, RenderTextureFormat.ARGBHalf);
+            //RenderTexture mipTexture = new RenderTexture(mapSize >> i, mapSize >> i, 0, RenderTextureFormat.ARGBHalf);
+            //mipTexture.dimension = UnityEngine.Rendering.TextureDimension.Cube;
+            Shader.SetGlobalFloat("_BakeRoughness", (float)i / (numMips - 1));
+            //cam.RenderToCubemap(mipTexture);
+            
+            for(int face = 0; face < 6; face++)
+            {
+                //render to a single face of the cubemap at a time
+                cam.targetTexture = mipTexture;
+                cam.transform.rotation = GetRotationForFace((CubemapFace)face);
+                cam.Render();
+                //cam.RenderToCubemap(mipTexture, 1 << face);
+                //mat.mainTexture = mipTexture;
+                mat.SetTexture("_MainTex", mipTexture);
+                
+                //textures need to be flipped certain ways before being rendered onto the cubemap
+                bool flipX = face == 2 || face == 3;
+                bool flipY = !flipX;
+                mat.SetFloat("_FlipX", flipX ? 1 : 0);
+                mat.SetFloat("_FlipY", flipY ? 1 : 0);
+                
+                //set target to specific face & mip of indirect specular map
+                Graphics.SetRenderTarget(indirectSpecularMap, i, (CubemapFace)face);
+                
+                //render full screen quad given above target texture and source texture set in material
+                GL.PushMatrix();
+                GL.LoadOrtho();
+                mat.SetPass(0);
+                GL.Begin(GL.QUADS);
+                GL.TexCoord2(0, 0);
+                GL.Vertex3(0, 0, 0);
+                GL.TexCoord2(0, 1);
+                GL.Vertex3(0, 1, 0);
+                GL.TexCoord2(1, 1);
+                GL.Vertex3(1, 1, 0);
+                GL.TexCoord2(1, 0);
+                GL.Vertex3(1, 0, 0);
+                GL.End();
+                GL.PopMatrix();
+
+
+                //Graphics.CopyTexture(mipTexture, face, 0, indirectSpecularMap, face, i);
+                step++;
+                UpdateProgressText(step);
+                yield return null;
+                //Debug.Break();
+            }
+        }
+        
+        /*
+        RenderTexture indirectDiffuseMap = new RenderTexture(diffuseMapSize, diffuseMapSize, 0, RenderTextureFormat.ARGBHalf);
+        indirectDiffuseMap.wrapMode = TextureWrapMode.Clamp;
+        indirectDiffuseMap.dimension = UnityEngine.Rendering.TextureDimension.Cube;
+        cam.RenderToCubemap(indirectDiffuseMap, debugFace > 0 ? debugFace : 63);
+        */
+        
+        cam.ResetReplacementShader();
+        proxyGeo.SetActive(false);
+        
+        Shader.SetGlobalTexture("_IndirectSpecularMap", indirectSpecularMap);
 
         _baking = false;
         loadingPanel.SetActive(false);
         DoneBaking?.Invoke();
+    }
+
+    private Quaternion GetRotationForFace(CubemapFace face)
+    {
+        switch (face)
+        {
+            case CubemapFace.NegativeX:
+                return Quaternion.LookRotation(Vector3.left, Vector3.up);
+            case CubemapFace.PositiveY:
+                return Quaternion.LookRotation(Vector3.up, Vector3.forward);
+            case CubemapFace.NegativeY:
+                return Quaternion.LookRotation(Vector3.down, Vector3.back);
+            case CubemapFace.PositiveZ:
+                return Quaternion.LookRotation(Vector3.forward, Vector3.up);
+            case CubemapFace.NegativeZ:
+                return Quaternion.LookRotation(Vector3.back, Vector3.up);
+            case CubemapFace.PositiveX:
+            default:
+                return Quaternion.LookRotation(Vector3.right, Vector3.up);
+        }
     }
 
     /*

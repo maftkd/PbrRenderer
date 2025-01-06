@@ -40,6 +40,33 @@ public class EnvironmentPanel : MonoBehaviour
             icon.Apply();
             img.texture = icon;
             _buttons.Add(butt);
+            if (i == 0)
+            {
+                RenderTexture dst = new RenderTexture(128, 128, 0, RenderTextureFormat.ARGB32);
+
+                //Graphics.Blit(src, dst);
+                //replace blit with manual gl calls
+                //Graphics.SetRenderTarget(dst);
+                RenderTexture.active = dst;
+                Material blitMat = new Material(Shader.Find("Unlit/Blit"));
+                blitMat.SetTexture("_MainTex", icon);
+                GL.PushMatrix();
+                GL.LoadOrtho();
+                blitMat.SetPass(0);
+                GL.Begin(GL.QUADS);
+                GL.TexCoord2(0, 0);
+                GL.Vertex3(0, 0, 0);
+                GL.TexCoord2(0, 1);
+                GL.Vertex3(0, 1, 0);
+                GL.TexCoord2(1, 1);
+                GL.Vertex3(1, 1, 0);
+                GL.TexCoord2(1, 0);
+                GL.Vertex3(1, 0, 0);
+                GL.End();
+                GL.PopMatrix();
+                
+                Shader.SetGlobalTexture("_BlitTest", dst);
+            }
         }
         RenderTexture.active = active;
         iconRT.Release();
