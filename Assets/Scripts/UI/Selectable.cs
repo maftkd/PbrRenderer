@@ -9,6 +9,8 @@ public class Selectable : MonoBehaviour
     public static Selectable selected;
     public UnityEvent onSelect;
     public UnityEvent onDeselect;
+
+    private bool _isSelected;
     // Start is called before the first frame update
     void Start()
     {
@@ -18,6 +20,15 @@ public class Selectable : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (_isSelected)
+        {
+            if((Input.GetKey(KeyCode.LeftCommand) || Input.GetKey(KeyCode.LeftControl)) && Input.GetKeyDown(KeyCode.D))
+            {
+                GameObject dupe = Instantiate(gameObject, transform.position + Vector3.one * 0.1f, transform.rotation,
+                    transform.parent);
+                dupe.GetComponent<Selectable>().Select();
+            }
+        }
         
     }
 
@@ -29,12 +40,14 @@ public class Selectable : MonoBehaviour
         }
 
         selected = this;
+        _isSelected = true;
         onSelect?.Invoke();
         Debug.Log("Selected: " + gameObject.name);
     }
 
     public void Deselect()
     {
+        _isSelected = false;
         onDeselect?.Invoke();
     }
 

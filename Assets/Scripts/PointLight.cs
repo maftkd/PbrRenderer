@@ -22,8 +22,13 @@ public class PointLight : MonoBehaviour
         
     }
 
-    public void UpdateLightingData(bool updateList = false)
+    public void UpdateLightingData(bool updateList)
     {
         _lightingManager.UpdatePointLightData(updateList);
+    }
+    
+    public void UpdateLightingData()
+    {
+        _lightingManager.UpdatePointLightData();
     }
 }
