@@ -3,6 +3,7 @@ Shader "Unlit/Billboard"
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
+        _Tint ("Tint", Color) = (1,1,1,1)
     }
     SubShader
     {
@@ -30,6 +31,7 @@ Shader "Unlit/Billboard"
             };
 
             sampler2D _MainTex;
+            float4 _Tint;
 
             v2f vert (appdata v)
             {
@@ -44,6 +46,12 @@ Shader "Unlit/Billboard"
                 // sample the texture
                 fixed4 col = tex2D(_MainTex, i.uv);
                 clip(col.a - 0.1);
+                float factor = length(_Tint.rgb);
+                float intensity = log2(factor);
+                
+                col.rgb *= normalize(_Tint.rgb);
+                //col.rgb = lerp(col.rgb, float3(1,1,1), 0.5);
+                col.rgb *= (intensity * 0.5);
                 col.rgb = pow(col.rgb, 2.2);
                 return col;
             }

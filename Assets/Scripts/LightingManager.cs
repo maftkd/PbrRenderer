@@ -7,6 +7,9 @@ public class LightingManager : MonoBehaviour
     
     // Start is called before the first frame update
     private static int MAX_LIGHTS = 16;
+
+    public LightingPanel lightingPanel;
+    
     void Start()
     {
         Shader.SetGlobalTexture("_BrdfLut", brdfLUT);
@@ -42,9 +45,16 @@ public class LightingManager : MonoBehaviour
         Shader.SetGlobalFloat("_PointLightCount", _pointLights.Length);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void ShowLightingPanel(PointLight pointLight)
     {
-        
+        lightingPanel.ShowPanel(pointLight);
+    }
+
+    public void HideLightingPanel()
+    {
+        if (lightingPanel != null)
+        {
+            lightingPanel.HidePanel();
+        }
     }
 }

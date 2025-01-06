@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
 
 public class Selectable : MonoBehaviour
 {
@@ -63,8 +64,11 @@ public class Selectable : MonoBehaviour
         onDeselect?.Invoke();
     }
 
-    private void OnMouseUpAsButton()
+    private void OnMouseDown()
     {
-        Select();
+        if (!EventSystem.current.IsPointerOverGameObject())
+        {
+            Select();
+        }
     }
 }
