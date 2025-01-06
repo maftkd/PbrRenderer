@@ -11,6 +11,8 @@ public class Selectable : MonoBehaviour
     public UnityEvent onDeselect;
 
     private bool _isSelected;
+
+    public bool disableDeletion;
     // Start is called before the first frame update
     void Start()
     {
@@ -22,14 +24,25 @@ public class Selectable : MonoBehaviour
     {
         if (_isSelected)
         {
-            if((Input.GetKey(KeyCode.LeftCommand) || Input.GetKey(KeyCode.LeftControl)) && Input.GetKeyDown(KeyCode.D))
+            if (Input.GetKey(KeyCode.LeftCommand) || Input.GetKey(KeyCode.LeftControl))
             {
-                GameObject dupe = Instantiate(gameObject, transform.position + Vector3.one * 0.1f, transform.rotation,
-                    transform.parent);
-                dupe.GetComponent<Selectable>().Select();
+                if(Input.GetKeyDown(KeyCode.D))
+                {
+                    GameObject dupe = Instantiate(gameObject, transform.position + Vector3.one * 0.1f, transform.rotation,
+                        transform.parent);
+                    dupe.GetComponent<Selectable>().Select();
+                }
+                else if (!disableDeletion && Input.GetKeyDown(KeyCode.X))
+                {
+                    Destroy(gameObject);
+                }
             }
         }
-        
+    }
+
+    private void OnDestroy()
+    {
+        Deselect();
     }
 
     public void Select()
@@ -42,7 +55,6 @@ public class Selectable : MonoBehaviour
         selected = this;
         _isSelected = true;
         onSelect?.Invoke();
-        Debug.Log("Selected: " + gameObject.name);
     }
 
     public void Deselect()

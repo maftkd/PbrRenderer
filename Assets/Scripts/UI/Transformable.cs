@@ -46,8 +46,10 @@ public class Transformable : MonoBehaviour
 
     public void DisableTransformation()
     {
-        transformGizmoGameObject.SetActive(false);
-        transformGizmo.OnTranslated -= Translate;
-        
+        if (transformGizmoGameObject != null)
+        {
+            transformGizmoGameObject.SetActive(false);
+            transformGizmo.OnTranslated -= Translate;
+        }
     }
 }

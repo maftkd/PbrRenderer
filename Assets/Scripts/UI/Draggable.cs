@@ -70,7 +70,6 @@ public class Draggable : MonoBehaviour
 
     void OnMouseDown()
     {
-        Debug.Log("Yoo");
         _dragging = true;
         if (axisGameObject != null)
         {

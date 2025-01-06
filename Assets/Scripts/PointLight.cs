@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,19 +13,18 @@ public class PointLight : MonoBehaviour
     void Start()
     {
         _lightingManager = transform.parent.GetComponent<LightingManager>();
-        UpdateLightingData(true);
+        UpdateLightingDataAndFindPointLights();
         
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnDestroy()
     {
-        
+        UpdateLightingDataAndFindPointLights();
     }
 
-    public void UpdateLightingData(bool updateList)
+    public void UpdateLightingDataAndFindPointLights()
     {
-        _lightingManager.UpdatePointLightData(updateList);
+        _lightingManager.UpdatePointLightData(true);
     }
     
     public void UpdateLightingData()
