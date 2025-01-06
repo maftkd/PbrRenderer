@@ -44,6 +44,7 @@ Shader "Unlit/Billboard"
                 // sample the texture
                 fixed4 col = tex2D(_MainTex, i.uv);
                 clip(col.a - 0.1);
+                col.rgb = pow(col.rgb, 2.2);
                 return col;
             }
             ENDCG

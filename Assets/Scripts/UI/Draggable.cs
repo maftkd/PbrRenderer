@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 public class Draggable : MonoBehaviour
 {
@@ -13,11 +14,15 @@ public class Draggable : MonoBehaviour
 
     public UnityEvent<Vector3> OnDrag;
 
-    private Vector3 _debugPoint;
+    public GameObject axisGameObject;
     // Start is called before the first frame update
     void Start()
     {
         mainCam = Camera.main;
+        if (axisGameObject != null)
+        {
+            axisGameObject.SetActive(false);
+        }
     }
 
     // Update is called once per frame
@@ -25,24 +30,32 @@ public class Draggable : MonoBehaviour
     {
         if (_dragging)
         {
-            //need to figure out where to move the target based on mouse position and a line in 3d space
-            //in this case we can assume the direction we want to move along is the transforms forward
-            //we can get the mouse position in world space by using the camera
-            Ray ray = mainCam.ScreenPointToRay(Input.mousePosition);
+            //Determine plane containing the axis we want to move in that is also mostly perpendicular to the camera
             Vector3 perpendicularVec = Vector3.Cross(mainCam.transform.forward, transform.up);
             Vector3 castPlaneNormal = Vector3.Cross(perpendicularVec, transform.up);
-            _debugPoint = transform.position + castPlaneNormal;
             Plane plane = new Plane(castPlaneNormal, moveTarget.position);
+            
+            //cast mouse to plane
+            Ray ray = mainCam.ScreenPointToRay(Input.mousePosition);
+            Vector3 planeTargetPos = Vector3.zero;
             if (plane.Raycast(ray, out float distance))
             {
-                moveTarget.position = ray.GetPoint(distance);
+                planeTargetPos = ray.GetPoint(distance);
             }
             
+            //now we want to calculate the nearest point on a perpendicular plane to the planeTargetPos
+            Vector3 diffToPerpendicular = Vector3.Project(planeTargetPos - moveTarget.position, perpendicularVec);
+            moveTarget.transform.position = planeTargetPos - diffToPerpendicular;
+            
             OnDrag?.Invoke(moveTarget.position);
-
+            
             if (Input.GetMouseButtonUp(0))
             {
                 _dragging = false;
+                if (axisGameObject != null)
+                {
+                    axisGameObject.SetActive(false);
+                }
             }
         }
     }
@@ -51,14 +64,14 @@ public class Draggable : MonoBehaviour
     {
         Debug.Log("Yoo");
         _dragging = true;
+        if (axisGameObject != null)
+        {
+            axisGameObject.SetActive(true);
+        }
     }
+
 
     private void OnDrawGizmos()
     {
-        if (_debugPoint != Vector3.zero)
-        {
-            Gizmos.color = Color.blue;
-            Gizmos.DrawLine(transform.position, _debugPoint);
-        }
     }
 }
