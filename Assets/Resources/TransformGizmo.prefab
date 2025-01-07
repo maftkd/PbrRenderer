@@ -128,7 +128,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  axisGameObject: {fileID: 7706853491431558013}
+  visualGameObject: {fileID: 7706853491431558013}
 --- !u!1 &4783673065381158399
 GameObject:
   m_ObjectHideFlags: 0
@@ -203,8 +203,9 @@ LineRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Positions:
-  - {x: 0, y: 0, z: -50}
-  - {x: 0, y: 0, z: 50}
+  - {x: 0, y: 0, z: -10}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 10}
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 0.01
@@ -225,7 +226,7 @@ LineRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 0, g: 0.18552971, b: 1, a: 1}
+      key0: {r: 0, g: 0.18552971, b: 1, a: 0}
       key1: {r: 0, g: 0.18431373, b: 1, a: 1}
       key2: {r: 1, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
@@ -242,7 +243,7 @@ LineRenderer:
       ctime6: 0
       ctime7: 0
       atime0: 0
-      atime1: 65535
+      atime1: 33346
       atime2: 65535
       atime3: 65535
       atime4: 0
@@ -251,7 +252,7 @@ LineRenderer:
       atime7: 0
       m_Mode: 0
       m_NumColorKeys: 2
-      m_NumAlphaKeys: 2
+      m_NumAlphaKeys: 3
     numCornerVertices: 0
     numCapVertices: 0
     alignment: 0
@@ -272,6 +273,7 @@ GameObject:
   - component: {fileID: 2666047368592507225}
   - component: {fileID: 2632417061757910775}
   - component: {fileID: 286143815656757223}
+  - component: {fileID: 3003334036115180666}
   m_Layer: 7
   m_Name: ZYPlane
   m_TagString: Untagged
@@ -287,8 +289,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4933356732930746378}
   m_LocalRotation: {x: -0.49991274, y: -0.49991274, z: -0.50008726, w: 0.50008726}
-  m_LocalPosition: {x: 0, y: 0.15, z: 0.15}
-  m_LocalScale: {x: 0.2, y: 0.025, z: 0.2}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.4, y: 0.025, z: 0.4}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4261031458844357126}
@@ -357,6 +359,35 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &3003334036115180666
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4933356732930746378}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33e005637d7234cd3beacdc47cd93850, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveTarget: {fileID: 4261031458844357126}
+  OnDrag:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7237217362696396568}
+        m_TargetAssemblyTypeName: TransformGizmo, Assembly-CSharp
+        m_MethodName: Translate
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  visualGameObject: {fileID: 0}
 --- !u!1 &6035114990674618610
 GameObject:
   m_ObjectHideFlags: 0
@@ -431,8 +462,9 @@ LineRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Positions:
-  - {x: 0, y: -50, z: 0}
-  - {x: 0, y: 50, z: 0}
+  - {x: 0, y: -10, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 10, z: 0}
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 0.01
@@ -453,7 +485,7 @@ LineRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 1, g: 0, b: 0, a: 1}
+      key0: {r: 1, g: 0, b: 0, a: 0}
       key1: {r: 1, g: 0, b: 0, a: 1}
       key2: {r: 1, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
@@ -470,7 +502,7 @@ LineRenderer:
       ctime6: 0
       ctime7: 0
       atime0: 0
-      atime1: 65535
+      atime1: 32960
       atime2: 65535
       atime3: 65535
       atime4: 0
@@ -479,7 +511,7 @@ LineRenderer:
       atime7: 0
       m_Mode: 0
       m_NumColorKeys: 2
-      m_NumAlphaKeys: 2
+      m_NumAlphaKeys: 3
     numCornerVertices: 0
     numCapVertices: 0
     alignment: 0
@@ -500,6 +532,7 @@ GameObject:
   - component: {fileID: 8825706597771942341}
   - component: {fileID: 3504506231288416247}
   - component: {fileID: 2766663845271786915}
+  - component: {fileID: 5706706196637762664}
   m_Layer: 7
   m_Name: XZPlane
   m_TagString: Untagged
@@ -515,8 +548,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7007392919523811987}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.15, y: 0, z: 0.15}
-  m_LocalScale: {x: 0.2, y: 0.025, z: 0.2}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.4, y: 0.025, z: 0.4}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4261031458844357126}
@@ -585,6 +618,35 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &5706706196637762664
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7007392919523811987}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33e005637d7234cd3beacdc47cd93850, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveTarget: {fileID: 4261031458844357126}
+  OnDrag:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7237217362696396568}
+        m_TargetAssemblyTypeName: TransformGizmo, Assembly-CSharp
+        m_MethodName: Translate
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  visualGameObject: {fileID: 0}
 --- !u!1 &7098583406624074352
 GameObject:
   m_ObjectHideFlags: 0
@@ -603,7 +665,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3606229370360945732
 Transform:
   m_ObjectHideFlags: 0
@@ -756,8 +818,9 @@ LineRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Positions:
-  - {x: -50, y: 0, z: 0}
-  - {x: 50, y: 0, z: 0}
+  - {x: -10, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 10, y: 0, z: 0}
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 0.01
@@ -778,7 +841,7 @@ LineRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 0.04830408, g: 1, b: 0, a: 1}
+      key0: {r: 0.04830408, g: 1, b: 0, a: 0}
       key1: {r: 0.047058824, g: 1, b: 0, a: 1}
       key2: {r: 1, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
@@ -795,7 +858,7 @@ LineRenderer:
       ctime6: 0
       ctime7: 0
       atime0: 0
-      atime1: 65535
+      atime1: 32768
       atime2: 65535
       atime3: 65535
       atime4: 0
@@ -804,7 +867,7 @@ LineRenderer:
       atime7: 0
       m_Mode: 0
       m_NumColorKeys: 2
-      m_NumAlphaKeys: 2
+      m_NumAlphaKeys: 3
     numCornerVertices: 0
     numCapVertices: 0
     alignment: 0
@@ -1006,7 +1069,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  axisGameObject: {fileID: 4783673065381158399}
+  visualGameObject: {fileID: 4783673065381158399}
 --- !u!1 &8853984481754079786
 GameObject:
   m_ObjectHideFlags: 0
@@ -1019,6 +1082,7 @@ GameObject:
   - component: {fileID: 2730980296606619192}
   - component: {fileID: 9003788972637475274}
   - component: {fileID: 4968184000615297654}
+  - component: {fileID: 4126973143885139072}
   m_Layer: 7
   m_Name: XYPlane
   m_TagString: Untagged
@@ -1034,8 +1098,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8853984481754079786}
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0.15, y: 0.15, z: 0}
-  m_LocalScale: {x: 0.2, y: 0.025, z: 0.2}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.4, y: 0.025, z: 0.4}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4261031458844357126}
@@ -1104,6 +1168,35 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &4126973143885139072
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8853984481754079786}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33e005637d7234cd3beacdc47cd93850, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveTarget: {fileID: 4261031458844357126}
+  OnDrag:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7237217362696396568}
+        m_TargetAssemblyTypeName: TransformGizmo, Assembly-CSharp
+        m_MethodName: Translate
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  visualGameObject: {fileID: 0}
 --- !u!1 &9038886430418369444
 GameObject:
   m_ObjectHideFlags: 0
@@ -1232,4 +1325,4 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  axisGameObject: {fileID: 6035114990674618610}
+  visualGameObject: {fileID: 6035114990674618610}

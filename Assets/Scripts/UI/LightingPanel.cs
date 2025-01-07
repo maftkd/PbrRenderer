@@ -28,8 +28,8 @@ public class LightingPanel : MonoBehaviour
             return;
         }
         //cast point lights world space position to screen space position in order to position this
-        Vector3 screenPos = _mainCam.WorldToScreenPoint(_targetLight.transform.position + Vector3.up);
-        transform.position = screenPos;
+        Vector3 screenPos = _mainCam.WorldToScreenPoint(_targetLight.transform.position);
+        transform.position = screenPos + Vector3.down * 150;
     }
 
     public void ShowPanel(PointLight light)

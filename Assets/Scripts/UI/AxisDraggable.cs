@@ -1,11 +1,7 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Serialization;
 
-public class Draggable : MonoBehaviour
+public class AxisDraggable : MonoBehaviour
 {
     private bool _dragging = false;
     public Transform moveTarget;
@@ -14,16 +10,16 @@ public class Draggable : MonoBehaviour
 
     public UnityEvent<Vector3> OnDrag;
 
-    public GameObject axisGameObject;
+    public GameObject visualGameObject;
 
     private Vector3 _offset;
     // Start is called before the first frame update
     void Start()
     {
         mainCam = Camera.main;
-        if (axisGameObject != null)
+        if (visualGameObject != null)
         {
-            axisGameObject.SetActive(false);
+            visualGameObject.SetActive(false);
         }
     }
 
@@ -40,9 +36,9 @@ public class Draggable : MonoBehaviour
             if (Input.GetMouseButtonUp(0))
             {
                 _dragging = false;
-                if (axisGameObject != null)
+                if (visualGameObject != null)
                 {
-                    axisGameObject.SetActive(false);
+                    visualGameObject.SetActive(false);
                 }
             }
         }
@@ -71,9 +67,9 @@ public class Draggable : MonoBehaviour
     void OnMouseDown()
     {
         _dragging = true;
-        if (axisGameObject != null)
+        if (visualGameObject != null)
         {
-            axisGameObject.SetActive(true);
+            visualGameObject.SetActive(true);
         }
 
         Vector3 initialPos = GetPointOnLineNearMouse();
