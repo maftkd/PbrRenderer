@@ -89,7 +89,9 @@ Shader "Unlit/PbrSimple"
                     
                     //Add up outgoing radiance
                     float nDotL = saturate(dot(normal, lightVec));
-                    lightOut += (diffuseRatio * _Albedo.rgb / UNITY_PI + specular) * radiance * nDotL;
+                    //lightOut += (diffuseRatio * _Albedo.rgb / UNITY_PI + specular) * radiance * nDotL;
+                    lightOut += ndf;
+                    //lightOut += geometryTerm;
                 }
                 
                 float ao = 1;
@@ -116,7 +118,7 @@ Shader "Unlit/PbrSimple"
                 
                 float3 ambient = (indirectDiffuseRatio * diffuse + specular) * ao;
 
-                //ambient = 0;
+                ambient = 0;
                 col.rgb = ambient + lightOut;
 
                 return col;

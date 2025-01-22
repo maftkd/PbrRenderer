@@ -23,7 +23,7 @@ public class ConstantScreenSize : MonoBehaviour
         {
             dist = distance;
         }
-        float width = Mathf.Tan(mainCam.fieldOfView * Mathf.Deg2Rad) * dist * 2;
+        float width = Mathf.Tan(mainCam.fieldOfView * Mathf.Deg2Rad) * dist;
         float height = width / mainCam.aspect;
         float widthInWorld = width * widthInPercentage / 100;
         float heightInWorld = height * widthInPercentage / 100;
