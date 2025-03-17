@@ -9,3 +9,5 @@ This project implements a metallic-flow using Cook-Torrence BRDF as described on
 I implemented my own indirect diffuse and specular environment map baker. This project supports baking environment maps at runtime and allows users to quickly switch between various environments.
 
 I also added the ability to click on objects and point light sources in order to move and manipulate them. The translation gizmo work here would later be used in other projects like [PathTracer](https://github.com/maftkd/PathTracer) & [MeshEditor](https://github.com/maftkd/MeshEditor) in order to provide ways of translating elements at runtime.
+
+A realtime interactive demo is available at https://rithmgaming.itch.io/pbr-demo
